@@ -5,7 +5,7 @@
 namespace BloggingWebApplication.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class FuckYouAll : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,8 +19,7 @@ namespace BloggingWebApplication.Migrations
                 table: "Comments",
                 column: "UserId",
                 principalTable: "Users",
-                principalColumn: "UserId",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "UserId");
         }
 
         /// <inheritdoc />
@@ -36,7 +35,7 @@ namespace BloggingWebApplication.Migrations
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "UserId",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }

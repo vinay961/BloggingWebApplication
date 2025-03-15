@@ -4,7 +4,7 @@ namespace BloggingWebApplication.Controllers
 {
     public class BlogController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Blog()
         {
             return View();
         }

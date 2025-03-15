@@ -1,0 +1,24 @@
+﻿@model BloggingWebApplication.Models.UserModel
+
+<h2 class="text-center mb-4">Login to Your Account</h2>
+
+<div class="container mt-4 col-md-6 shadow p-4 rounded">
+    <form asp-controller="Auth" asp-action="Login" method="post">
+
+        <div class="form-group mb-3">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Password" class="form-label">Password</label>
+            <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+
+        <p class="text-center mt-3">
+            Don't have an account? <a asp-controller="Home" asp-action="Register">Register Here</a>
+        </p>
+    </form>
+</div>

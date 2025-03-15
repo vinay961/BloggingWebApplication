@@ -1,19 +1,15 @@
 ﻿using BloggingWebApplication.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Reflection.Metadata;
 
 namespace BloggingWebApplication.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        }
-        public DbSet<Models.BlogModel>? Blogs { get; set; }
-        public DbSet<Models.CommentModel>? Comments { get; set; }
-        public DbSet<Models.UserModel>? Users { get; set; }
+        public DbSet<BlogModel> Blogs { get; set; }
+        public DbSet<CommentModel> Comments { get; set; }
+        public DbSet<UserModel> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,21 +18,21 @@ namespace BloggingWebApplication.Data
                 .HasOne(b => b.User)
                 .WithMany(u => u.Blogs)
                 .HasForeignKey(b => b.UserId)
-                .OnDelete(DeleteBehavior.Cascade);  // ✅ Keep Cascade here
+                .OnDelete(DeleteBehavior.Cascade);  // ✅ Works fine
 
-            // Comment -> User (No Action on Delete)
+            // Comment -> User (No Action on Delete to avoid foreign key conflict)
             modelBuilder.Entity<CommentModel>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Comments)
                 .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.NoAction);  // ❌ No Cascade here
+                .OnDelete(DeleteBehavior.NoAction);  // ✅ Works fine
 
-            // Comment -> Blog (with Cascade Delete)
+            // Comment -> Blog (Cascade Delete when Blog is deleted)
             modelBuilder.Entity<CommentModel>()
                 .HasOne(c => c.Blog)
                 .WithMany(b => b.Comments)
                 .HasForeignKey(c => c.BlogId)
-                .OnDelete(DeleteBehavior.Cascade);  // ✅ Keep Cascade here
+                .OnDelete(DeleteBehavior.Cascade);  // ✅ Works fine
         }
     }
 }

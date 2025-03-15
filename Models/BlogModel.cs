@@ -10,7 +10,7 @@ namespace BloggingWebApplication.Models
         public string? Title { get; set; }
         public string? Content { get; set; }
 
-        // Foreign key for the user who post the blog
+        // Foreign key for User
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
