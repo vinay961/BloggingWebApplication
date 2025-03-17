@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BloggingWebApplication.Models;
 using BloggingWebApplication.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BloggingWebApplication.Controllers;
 
@@ -18,14 +19,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var sampleBlogs = new List<BloggingWebApplication.Models.BlogModel>
-        {
-        new BlogModel { Id = 1, Title = "C# for Beginners", Content = "Learn the basics of C# programming." },
-        new BlogModel { Id = 2, Title = "ASP.NET Core MVC", Content = "Step-by-step guide to building web applications." },
-        new BlogModel { Id = 3, Title = "Entity Framework", Content = "How to handle database operations in ASP.NET." }
-        };
+        var allBlogs = dbContext.Blogs.ToList();
 
-        return View(sampleBlogs);
+        return View(allBlogs);
     }
 
     public IActionResult Register()
@@ -55,24 +51,32 @@ public class HomeController : Controller
     {
         // Sample data for checking the functionality
 
-        var userInDb = dbContext.Users.FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+        var userInDb = dbContext.Users.FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password); // it return null if no user found, else return the user
         if (userInDb != null)
         {
+            HttpContext.Session.SetString("UserId", userInDb.UserId.ToString());
+            HttpContext.Session.SetString("Username", userInDb.Username);
             return RedirectToAction("Dashboard");
         }
-        return View();
+        return View("Login");
     }
 
     public IActionResult Dashboard()
     {
-        var sampleBlogs = new List<BloggingWebApplication.Models.BlogModel>
+        var userId = HttpContext.Session.GetString("UserId");
+        if(userId == null)
         {
-        new BlogModel { Id = 1, Title = "C# for Beginners", Content = "Learn the basics of C# programming." },
-        new BlogModel { Id = 2, Title = "ASP.NET Core MVC", Content = "Step-by-step guide to building web applications." },
-        new BlogModel { Id = 3, Title = "Entity Framework", Content = "How to handle database operations in ASP.NET." }
-        };
-        
-        return View(sampleBlogs);
+            return RedirectToAction("Login");
+        }
+        var blogs = dbContext.Blogs.Include(b => b.User).Where(b => b.UserId == Convert.ToInt32(userId)).ToList();
+
+        return View(blogs);
+    }
+
+    public IActionResult Logout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToAction("Login");
     }
 
     public IActionResult Privacy()

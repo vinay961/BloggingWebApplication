@@ -1,5 +1,5 @@
 using BloggingWebApplication.Data;
-using BloggingWebApplication.Middleware;
+//using BloggingWebApplication.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +29,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseSession();
 
-app.UseMiddleware<AuthMiddleware>();
+//app.UseMiddleware<AuthMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

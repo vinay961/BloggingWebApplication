@@ -1,0 +1,23 @@
+﻿@model BloggingWebApplication.Models.BlogModel
+
+@{
+    ViewData["Title"] = "Add Blog";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Create a New Blog Post</h2>
+
+    <form asp-action="AddBlog" method="post">
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input asp-for="Title" class="form-control" placeholder="Enter Blog Title">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Content</label>
+            <textarea asp-for="Content" class="form-control" rows="5" placeholder="Write your blog content..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Blog</button>
+    </form>
+</div>

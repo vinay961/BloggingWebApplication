@@ -1,0 +1,35 @@
+﻿@model BloggingWebApplication.Models.BlogDetailsViewModel
+
+<div class="container my-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-3 text-info">@Model.Blog.Title</h2>
+        <p class="text-muted">By <strong>@Model.User.Username</strong></p>
+        <p class ="text-secondary">@Model.Blog.Content</p>
+        <hr />
+
+        <h4 class="mb-3">Comments</h4>
+        @if (Model.Comments != null && Model.Comments.Any())
+        {
+            <div class="list-group">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="list-group-item border-0 mb-3 bg-light rounded">
+                        <strong class="text-primary">@comment.User.Username</strong>
+                        <p class="mb-1">@comment.Content</p>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-secondary">No comments yet. Be the first to comment!</p>
+        }
+
+        <h5 class="mt-4">Leave a Comment</h5>
+        <form method="post" asp-action="AddComment">
+            <input type="hidden" name="BlogId" value="@Model.Blog.Id" />
+            <textarea name="Content" class="form-control mb-3" placeholder="Write your comment..." rows="3"></textarea>
+            <button type="submit" class="btn btn-outline-info btn-sm">Post Comment</button>
+        </form>
+    </div>
+</div>
