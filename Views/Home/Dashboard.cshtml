@@ -23,11 +23,11 @@
             @foreach (var blog in Model)
             {
                 <tr>
-                    <td>@blog.Title</td>
-                    <td>@blog.Content.Substring(0, Math.Min(100, blog.Content.Length))...</td>
+                    <td>@blog.Title.Substring(0, Math.Min(40,blog.Title.Length))...</td>
+                    <td>@blog.Content.Substring(0, Math.Min(80, blog.Content.Length))...</td>
                     <td>
-                        <a asp-controller="Blog" asp-action="Edit" asp-route-id="@blog.Id" class="btn btn-primary btn-sm">Edit</a>
-                        <a asp-controller="Blog" asp-action="Delete" asp-route-id="@blog.Id" class="btn btn-danger btn-sm">Delete</a>
+                        <a asp-controller="Blog" asp-action="EditBlog" asp-route-id="@blog.Id" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-controller="Blog" asp-action="DeleteBlog" asp-route-id="@blog.Id" class="btn btn-danger btn-sm">Delete</a>
                         <a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.Id" class="btn btn-secondary btn-sm">View</a>
                     </td>
                 </tr>

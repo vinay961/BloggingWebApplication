@@ -1,0 +1,25 @@
+﻿@model BloggingWebApplication.Models.BlogModel
+
+<div class="container my-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center text-info">Edit Blog</h2>
+        <hr />
+
+        <form method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" asp-for="Title" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Content</label>
+                <textarea asp-for="Content" class="form-control" rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-info">Update Blog</button>
+            <a asp-action="Dashboard" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
