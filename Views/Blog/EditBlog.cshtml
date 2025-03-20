@@ -1,25 +1,47 @@
 ﻿@model BloggingWebApplication.Models.BlogModel
 
-<div class="container my-5">
-    <div class="card shadow p-4">
-        <h2 class="text-center text-info">Edit Blog</h2>
-        <hr />
+@{
+    ViewData["Title"] = "Edit Blog";
+}
 
-        <form method="post">
-            <input type="hidden" asp-for="Id" />
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">📝 Edit Blog Post</h2>
 
-            <div class="mb-3">
-                <label class="form-label">Title</label>
-                <input type="text" asp-for="Title" class="form-control" required />
-            </div>
+    <form asp-action="EditBlog" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" /> <!-- Hidden field for Blog ID -->
 
-            <div class="mb-3">
-                <label class="form-label">Content</label>
-                <textarea asp-for="Content" class="form-control" rows="5" required></textarea>
-            </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Title</label>
+            <input asp-for="Title" class="form-control border-2 shadow-sm" placeholder="Enter Blog Title" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
 
-            <button type="submit" class="btn btn-info">Update Blog</button>
-            <a asp-action="Dashboard" asp-controller="Home" class="btn btn-secondary">Cancel</a>
-        </form>
-    </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Content</label>
+            <textarea asp-for="Content" class="form-control border-2 shadow-sm" rows="5" placeholder="Write your blog content..." required></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 text-center">
+            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            {
+                <img src="@Model.ImagePath" alt="Blog Image" class="img-fluid rounded" width="250">
+            }
+            else
+            {
+                <p class="text-muted">No image uploaded</p>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Upload New Image</label>
+            <input type="file" name="BlogImage" class="form-control border-2 shadow-sm" accept="image/*">
+            <span class="text-muted">Optional: Upload a new image for your blog.</span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a asp-controller="Blog" asp-action="Index" class="btn btn-outline-secondary px-4">⬅️ Back</a>
+            <button type="submit" class="btn btn-primary px-4">💾 Save Changes</button>
+        </div>
+    </form>
 </div>

@@ -9,6 +9,7 @@ namespace BloggingWebApplication.Models
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
+        public string? ImagePath { get; set; }
 
         // Foreign key for User
         public int UserId { get; set; }
@@ -18,5 +19,8 @@ namespace BloggingWebApplication.Models
 
         // One blog can have many comments
         public List<CommentModel>? Comments { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
     }
 }

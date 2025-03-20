@@ -4,18 +4,29 @@
     <h1 class="text-center mb-4 text-primary">Welcome to the Blogging Platform</h1>
     <p class="text-center text-danger">@TempData["Message"]</p>
 
-    <div class="row">
-        @foreach (var blog in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title text-dark fw-bold">@blog.Title</h5>
-                        <p class="card-text text-muted">@blog.Content.Substring(0, Math.Min(blog.Content.Length, 100))...</p>
-                        <a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.Id" class="btn btn-primary btn-sm">Read More</a>
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning text-center fw-bold">
+            No blogs found. Be the first to create a blog! ✍️
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var blog in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-dark fw-bold">@blog.Title</h5>
+                            <p class="card-text text-muted">
+                                @blog.Content.Substring(0, Math.Min(blog.Content.Length, 100))...
+                            </p>
+                            <a asp-controller="Blog" asp-action="Details" asp-route-id="@blog.Id" class="btn btn-primary btn-sm">Read More</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>

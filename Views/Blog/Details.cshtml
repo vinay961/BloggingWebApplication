@@ -4,7 +4,16 @@
     <div class="card shadow p-4">
         <h2 class="mb-3 text-info">@Model.Blog.Title</h2>
         <p class="text-muted">By <strong>@Model.User.Username</strong></p>
-        <p class ="text-secondary">@Model.Blog.Content</p>
+
+        <!-- Display Blog Image -->
+        @if (!string.IsNullOrEmpty(Model.Blog.ImagePath))
+        {
+            <div class="text-center my-3">
+                <img src="@Model.Blog.ImagePath" alt="Blog Image" class="img-fluid rounded" style="max-height: 400px; width: auto;">
+            </div>
+        }
+
+        <p class="text-secondary">@Model.Blog.Content</p>
         <hr />
 
         <h4 class="mb-3">Comments</h4>
@@ -40,7 +49,6 @@
                     </div>
                 }
             </div>
-
         }
         else
         {

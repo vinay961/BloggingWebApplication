@@ -1,15 +1,26 @@
-﻿@model List<BloggingWebApplication.Models.BlogModel>
+﻿<h2 class="text-center mb-4">Welcome, @Model.User.Username! 👋</h2>
 
-<h2 class="text-center mb-4">Welcome to Your Dashboard 👋</h2>
-
-<div class="d-flex justify-content-between">
-    <a asp-controller="Blog" asp-action="AddBlog" class="btn btn-success">➕ Add New Blog</a>
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <h5>Email: @Model.User.Email</h5>
+    </div>
+    <div>
+        <a asp-controller="Home" asp-action="EditProfile" asp-route-id="@Model.User.UserId" class="btn btn-warning btn-sm">✏️ Edit Profile</a>
+        <form method="post" asp-controller="Home" asp-action="DeleteProfile" onsubmit="return confirm('Are you sure?');" style="display:inline;">
+            <input type="hidden" name="id" value="@Model.User.UserId" />
+            <button type="submit" class="btn btn-danger btn-sm">🗑️ Delete Account</button>
+        </form>
+    </div>
 </div>
+
 <hr />
 
-<h3 class="mt-4">Your Blogs 📝</h3>
+<div class="d-flex justify-content-between align-items-center">
+    <h3>Your Blogs 📝</h3>
+    <a asp-controller="Blog" asp-action="AddBlog" class="btn btn-success">➕ Add Blog</a>
+</div>
 
-@if (Model.Count > 0)
+@if (Model.Blogs.Count > 0)
 {
     <table class="table table-bordered table-striped mt-3">
         <thead>
@@ -20,10 +31,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var blog in Model)
+            @foreach (var blog in Model.Blogs)
             {
                 <tr>
-                    <td>@blog.Title.Substring(0, Math.Min(40,blog.Title.Length))...</td>
+                    <td>@blog.Title.Substring(0, Math.Min(40, blog.Title.Length))...</td>
                     <td>@blog.Content.Substring(0, Math.Min(80, blog.Content.Length))...</td>
                     <td>
                         <a asp-controller="Blog" asp-action="EditBlog" asp-route-id="@blog.Id" class="btn btn-primary btn-sm">Edit</a>
@@ -38,4 +49,5 @@
 else
 {
     <p>No Blogs Found 📝. Create your first blog now!</p>
+    <a asp-controller="Blog" asp-action="AddBlog" class="btn btn-success">➕ Add Blog</a>
 }

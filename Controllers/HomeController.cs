@@ -68,11 +68,60 @@ public class HomeController : Controller
         {
             return RedirectToAction("Login");
         }
+        var user = dbContext.Users.FirstOrDefault(u => u.UserId == Convert.ToInt32(userId));
         var blogs = dbContext.Blogs.Include(b => b.User).Where(b => b.UserId == Convert.ToInt32(userId)).ToList();
 
-        return View(blogs);
+        var model = new DashboardViewModel
+        {
+            User = user,
+            Blogs = blogs
+        };
+
+        return View(model);
     }
 
+    public IActionResult EditProfile(int id)
+    {
+        var user = dbContext.Users.FirstOrDefault(u => u.UserId == id);
+        return View(user);
+    }
+    [HttpPost]
+    public IActionResult EditProfile(UserModel user)
+    {
+        if (user != null)
+        {
+            var existingUser = dbContext.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            existingUser.Username = user.Username;
+            existingUser.Email = user.Email;
+
+            dbContext.SaveChanges();
+            return RedirectToAction("Dashboard");
+        }
+        ViewBag.Message = "Invalid data";
+        return View(user);
+    }
+
+    public IActionResult DeleteProfile(int id)
+    {
+        var user = dbContext.Users
+            .Include(u => u.Blogs)
+            .Include(u => u.Comments)
+            .FirstOrDefault(u => u.UserId == id);
+
+        try
+        {
+            dbContext.Comments.RemoveRange(user.Comments);
+            dbContext.Blogs.RemoveRange(user.Blogs);
+            dbContext.Users.Remove(user);
+            dbContext.SaveChanges();
+            return RedirectToAction("Logout");
+        }
+        catch (Exception ex)
+        {
+            ViewBag.Message = ex.Message;
+            return View();
+        }
+    }
     public IActionResult Logout()
     {
         HttpContext.Session.Clear();
